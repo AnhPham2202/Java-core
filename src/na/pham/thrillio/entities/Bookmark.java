@@ -38,4 +38,12 @@ public abstract class  Bookmark {
 	}
 	
 	public abstract boolean isKidFriendlyEligible();
+
+	public String getKidFriendlyStaus() {
+		return kidFriendlyStaus;
+	}
+
+	public void setKidFriendlyStaus(String kidFriendlyStaus) {
+		this.kidFriendlyStaus = kidFriendlyStaus;
+	}
 }
