@@ -1,10 +1,13 @@
 package na.pham.thrillio.entities;
 
-public class Bookmark {
+import na.pham.thrillio.constants.KidFriendlyStatus;
+
+public abstract class  Bookmark {
 	private long id;
 	private String title;
 	private String profileUrl;
-
+	private String kidFriendlyStaus = KidFriendlyStatus.UNKNOWN;
+	
 	public long getId() {
 		return id;
 	}
@@ -33,5 +36,6 @@ public class Bookmark {
 	public String toString() {
 		return "Bookmark [id=" + id + ", title=" + title + ", profileUrl=" + profileUrl + "]";
 	}
-
+	
+	public abstract boolean isKidFriendlyEligible();
 }
