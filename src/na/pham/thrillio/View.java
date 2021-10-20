@@ -5,6 +5,7 @@ import na.pham.thrillio.constants.UserType;
 import na.pham.thrillio.controllers.BookmarkController;
 import na.pham.thrillio.entities.Bookmark;
 import na.pham.thrillio.entities.User;
+import na.pham.thrillio.partners.Sharable;
 
 public class View {
 	public static void browse(User user, Bookmark[][] bookmarks) {
@@ -30,13 +31,23 @@ public class View {
 						String kidFriendlyStatus = getFriendlyStatusDecision(bookmark);
 						
 						if (!kidFriendlyStatus.equals(KidFriendlyStatus.UNKNOWN)) {
-							bookmark.setKidFriendlyStaus(kidFriendlyStatus);
-							System.out.println("Kid friendly status " + kidFriendlyStatus + ", " + bookmark);
+							BookmarkController.getInstance().setKidFriendlyStaus(user, kidFriendlyStatus, bookmark);
 						}
+					}
+				}
+				// Sharing
+				if (bookmark.getKidFriendlyStaus().equals(KidFriendlyStatus.APPROVED) && bookmark instanceof Sharable) {
+					boolean isShare = getShareDecision();
+					if (isShare) {
+						BookmarkController.getInstance().share(user, bookmark);
 					}
 				}
 			}
 		}
+	}
+
+	private static boolean getShareDecision() {
+		return Math.random() < 0.5 ? true : false;
 	}
 
 	private static String getFriendlyStatusDecision(Bookmark bookmark) {

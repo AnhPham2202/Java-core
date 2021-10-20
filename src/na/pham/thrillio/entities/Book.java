@@ -2,6 +2,8 @@ package na.pham.thrillio.entities;
 
 import java.util.Arrays;
 
+import org.apache.commons.lang3.StringUtils;
+
 import na.pham.thrillio.constants.BookGenre;
 import na.pham.thrillio.partners.Sharable;
 
@@ -72,13 +74,14 @@ public class Book extends Bookmark implements Sharable {
 		builder.append("<item>");
 		builder.append("<type>Book</type>");
 		builder.append("<title>").append(getTitle()).append("</title>");
-		builder.append("<authors>").append(authors).append("</authors>");
+		builder.append("<authors>").append(StringUtils.join(authors, ", ")).append("</authors>");
 		builder.append("<publisher>").append(publisher).append("</publisher>");
 		builder.append("<publicationYear>").append(publicationYear).append("</publicationYear>");
 		builder.append("<genre>").append(genre).append("</genre>");
 		builder.append("<amazonRating>").append(amazonRating).append("</amazonRating>");
 		builder.append("</item>");
-
+		
+		return builder.toString();
 	}
 
 }
