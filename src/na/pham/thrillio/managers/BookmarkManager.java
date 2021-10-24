@@ -1,5 +1,9 @@
 package na.pham.thrillio.managers;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+
+import na.pham.thrillio.constants.BookGenre;
 import na.pham.thrillio.dao.BookmarkDao;
 import na.pham.thrillio.entities.Book;
 import na.pham.thrillio.entities.Bookmark;
@@ -7,6 +11,8 @@ import na.pham.thrillio.entities.Movie;
 import na.pham.thrillio.entities.User;
 import na.pham.thrillio.entities.UserBookmark;
 import na.pham.thrillio.entities.Weblink;
+import na.pham.thrillio.ulti.HttpConnect;
+import na.pham.thrillio.ulti.IOUtil;
 
 public class BookmarkManager {
 	private static BookmarkManager intstance = new BookmarkManager();
@@ -34,7 +40,7 @@ public class BookmarkManager {
 		return movie;
 	}
 	
-	public Book createBook (long id, String title, int publicationYear, String publisher, String[] authors, String genre, double amazonRating) {
+	public Book createBook (long id, String title, int publicationYear, String publisher, String[] authors, BookGenre genre, double amazonRating) {
 		Book book = new Book();
 		book.setId(id);
 		book.setTitle(title);
@@ -66,6 +72,24 @@ public class BookmarkManager {
 		UserBookmark userBookmark = new UserBookmark();
 		userBookmark.setUser(user);
 		userBookmark.setBookmark(bookmark);
+		
+		
+		if (bookmark instanceof Weblink) {
+			try {				
+				String url = ((Weblink)bookmark).getUrl();
+				if (!url.endsWith(".pdf")) {
+					String webpage = HttpConnect.download(((Weblink)bookmark).getUrl());
+					if (webpage != null) {
+						IOUtil.write(webpage, bookmark.getId());					}
+				}				
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		dao.saveUserBookmark(userBookmark);
 	}
