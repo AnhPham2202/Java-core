@@ -1,5 +1,10 @@
 package na.pham.thrillio;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import na.pham.thrillio.constants.BookGenre;
 import na.pham.thrillio.constants.Gender;
 import na.pham.thrillio.constants.MovieGenre;
@@ -32,10 +37,26 @@ public class DataStore {
 	}
 
 	public static void loadData() {
-		loadUsers();
-		loadWeblinks();
-		loadMovies();
-		loadBooks();
+//		loadUsers();
+//		loadWeblinks();
+//		loadMovies();
+//		loadBooks();
+//		
+		try {
+			// các cách register jdbc driver 
+			new com.mysql.jdbc.Driver();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		// Connection: String: <protocol>:<sub-protocol>:<Data-source details>
+		try(Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/jid_thrillio", "root", "Anhanhdat1!")) {
+			Statement stmt = conn.createStatement(); // create statement: use to excecute qr
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	private static void loadBooks() {
@@ -50,6 +71,7 @@ public class DataStore {
 //				BookGenre.TECHNICAL, 4.5);
 //		bookmarks[2][4] = BookmarkManager.getInstance().createBook(4005, "Effective Java Programming Language Guide",
 //				2007, "Prentice Hall", new String[] { "Joshua Bloch" }, BookGenre.TECHNICAL, 4.9);
+	
 
 		String[] data = new String[TOTAL_USER_COUNT];
 		IOUtil.read(data, "Book");
